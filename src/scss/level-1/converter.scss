@@ -1,0 +1,43 @@
+.converter {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Noto Serif", "Georgia", serif;
+  font-size: 18px;
+}
+
+.converter > * {
+  margin-bottom: 15px;
+}
+
+.converter__input {
+  height: 30px;
+  width: 250px;
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+
+  font-family: inherit;
+  font-size: inherit;
+  color: $color-white;
+
+  background-color: $input-background-color;
+  transition: 0.15s;
+
+  &::placeholder {
+    color: $color-white;
+  }
+
+  &:hover {
+    background-color: $input-background-hover-color;
+  }
+
+  &:focus {
+    border: none;
+    outline: none;
+    background-color: $input-background-focus-color;
+  }
+}

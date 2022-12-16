@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="page no-js" lang="ru">
+<html class="page" lang="ru">
 
 @@include('./src/html/includes/head.html', {
   "title": "Конвертер римских чисел",
@@ -7,15 +7,11 @@
 })
 
 <body class="page__body">
-  <div style="display: none;">
-    @@include('./build/img/sprite.svg')
-  </div>
-
   <main class="page__main">
     <h1 class="visually-hidden">Конвертер римских чисел</h1>
 
     <section class="page__converter converter">
-			<input class="converter__input" type="text" placeholder="Введите число"> = <output class="converter__output"></output>
+			<input class="converter__input" type="text" placeholder="Введите число"><output class="converter__output"></output>
 		</section>
   </main>
 

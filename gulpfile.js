@@ -11,16 +11,12 @@ const gulpIf           = require('gulp-if');
 const gulpWebpack      = require('webpack-stream');
 const htmlmin          = require('gulp-htmlmin');
 const imagemin         = require('gulp-imagemin');
-const inlineSvg        = require('postcss-inline-svg');
 const magicImporter    = require('node-sass-magic-importer');
-const newer            = require('gulp-newer');
 const plumber          = require('gulp-plumber');
 const postcss          = require('gulp-postcss');
 const postcssNormalize = require('postcss-normalize');
 const rename           = require('gulp-rename');
 const sass             = require('gulp-sass')(require('sass'));
-const svgstore         = require('gulp-svgstore');
-const webp             = require('gulp-webp');
 const webpack          = require('webpack');
 
 // **************************** ФАЙЛОВАЯ СТРУКТУРА *****************************
@@ -32,7 +28,6 @@ const SrcPaths = {
   HTML: `${SRC_PATH}/html`,
   SCSS: `${SRC_PATH}/scss`,
   JS: `${SRC_PATH}/js`,
-  IMG: `${SRC_PATH}/img`,
   FONTS: `${SRC_PATH}/fonts`,
   FAVICON: `${SRC_PATH}/favicon`
 };
@@ -44,10 +39,6 @@ const SrcFiles = {
   HTML: [`${SrcPaths.HTML}/**/*.html`],
   SCSS: [`${SrcPaths.SCSS}/**/*.scss`],
   JS: [`${SrcPaths.JS}/**/*.js`],
-  IMG: [`${SrcPaths.IMG}/**/*.{jpg,jpeg,png,gif,svg}`],
-  WEBP: [`${SrcPaths.IMG}/**/*.{jpg,jpeg,png}`],
-  SVG: [`${SrcPaths.IMG}/**/*.svg`],
-  SVG_SPRITE: [`${SrcPaths.IMG}/**/icon-*.svg`],
   FONTS: [`${SrcPaths.FONTS}/**/*`],
   FAVICON: [`${SrcPaths.FAVICON}/**/*`]
 }
@@ -56,14 +47,12 @@ const BuildPaths = {
   HTML: `${BUILD_PATH}`,
   CSS: `${BUILD_PATH}/css`,
   JS: `${BUILD_PATH}/js`,
-  IMG: `${BUILD_PATH}/img`,
   FONTS: `${BUILD_PATH}/fonts`,
   FAVICON: `${BUILD_PATH}`
 };
 
 const CSS_BUNDLE_FILENAME = 'style.min.css';
 const JS_BUNDLE_FILENAME = 'script.min.js';
-const SVG_SPRITE_FILENAME = 'sprite.svg';
 
 // ************************* ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ***************************
 
@@ -127,9 +116,6 @@ const buildCss = () => {
       importer: magicImporter()
     }).on('error', sass.logError))
     .pipe(postcss([
-      inlineSvg({
-        paths: ['.']
-      }),
       postcssNormalize({
         forceImport: 'normalize.css'
       }),
@@ -176,61 +162,6 @@ const buildJs = () => {
 
 exports.buildJs = series(buildJs);
 
-// Изображения
-
-const buildImg = () => {
-  return src(SrcFiles.IMG, { base: `${SrcPaths.IMG}` })
-    .pipe(gulpIf(!isProductionMode, plumber()))
-    .pipe(gulpIf(!isProductionMode, newer(`${BuildPaths.IMG}`)))
-    .pipe(gulpIf(isProductionMode, imagemin([
-      imagemin.mozjpeg({
-        quality: 90,
-        progressive: true
-      }),
-      imagemin.optipng({
-        optimizationLevel: 3
-      }),
-      imagemin.svgo(),
-      imagemin.gifsicle()
-    ])))
-    .pipe(dest(`${BuildPaths.IMG}`));
-};
-
-exports.buildImg = series(buildImg);
-
-// WebP
-
-const buildWebp = () => {
-  return src(SrcFiles.WEBP, { base: `${SrcPaths.IMG}` })
-    .pipe(gulpIf(!isProductionMode, plumber()))
-    .pipe(webp({
-      quality: 90
-    }))
-    .pipe(dest(`${BuildPaths.IMG}`));
-};
-
-exports.buildWebp = series(buildWebp);
-
-// SVG-спрайт
-
-const buildSvgSprite = () => {
-  return src(SrcFiles.SVG_SPRITE)
-    .pipe(imagemin([
-      imagemin.svgo({
-        plugins: [{
-          cleanupIDs: true
-        }]
-      })
-    ]))
-    .pipe(svgstore({
-      inlineSvg: true
-    }))
-    .pipe(rename(SVG_SPRITE_FILENAME))
-    .pipe(dest(`${BuildPaths.IMG}`));
-}
-
-exports.buildSvgSprite = series(buildSvgSprite);
-
 // Шрифты
 
 const buildFonts = () => {
@@ -273,28 +204,18 @@ const startServer = () => {
   // Вотчеры
 
   watch(
-    [...SrcFiles.HTML, ...SrcFiles.SVG_SPRITE],
-    series(buildSvgSprite, buildHtml, reloadPage)
+    SrcFiles.HTML,
+    series(buildHtml, reloadPage)
   );
 
   watch(
-    [...SrcFiles.SCSS, ...SrcFiles.SVG],
+    SrcFiles.SCSS,
     series(buildCss, reloadPage)
   );
 
   watch(
     SrcFiles.JS,
     series(buildJs, reloadPage)
-  );
-
-  watch(
-    SrcFiles.IMG,
-    series(buildImg, reloadPage)
-  );
-
-  watch(
-    SrcFiles.WEBP,
-    series(buildWebp, reloadPage)
   );
 
   watch(
@@ -315,11 +236,9 @@ const startServer = () => {
 const build = series(
   clearBuildForlder,
   parallel(
-    series(buildSvgSprite, buildHtml),
+    buildHtml,
     buildCss,
     buildJs,
-    buildImg,
-    buildWebp,
     buildFonts,
     buildFavicon
   )
