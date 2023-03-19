@@ -21,3 +21,12 @@
   justify-content: center;
   align-items: center;
 }
+
+.page__footer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  background-color: $block-background-color;
+}

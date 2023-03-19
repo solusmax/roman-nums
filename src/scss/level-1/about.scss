@@ -1,0 +1,25 @@
+.about {
+  margin: 0;
+  padding: 10px;
+
+  font-family: "Noto Serif", "Georgia", serif;
+  font-weight: 600;
+  font-size: 20px;
+  text-align: right;
+  color: rgba($color-white, 0.8);
+}
+
+.about__link {
+  color: inherit;
+  text-decoration: none;
+
+  transition-duration: 0.15s;
+
+  &:hover {
+    color: rgba($color-white, 0.6);
+  }
+
+  &:active {
+    color: rgba($color-white, 0.4);
+  }
+}
