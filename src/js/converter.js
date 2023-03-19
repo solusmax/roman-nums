@@ -101,14 +101,16 @@ export const convert = (value) => {
     return '';
   }
 
+  const currentValue = value.toUpperCase();
+
   let resultValue;
 
-  if (hasArabicDigits(value)) {
-    resultValue = convertToRoman(value);
+  if (hasArabicDigits(currentValue)) {
+    resultValue = convertToRoman(currentValue);
   }
 
-  if (hasRomanDigits(value)) {
-    resultValue = convertToArabic(value);
+  if (hasRomanDigits(currentValue)) {
+    resultValue = convertToArabic(currentValue);
   }
 
   return resultValue;

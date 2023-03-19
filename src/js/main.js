@@ -11,7 +11,9 @@ const getInputValue = (value) => {
     return '';
   }
 
-  let resultValue = value;
+  const currentValue = value.toUpperCase();
+
+  let resultValue = currentValue;
 
   if (hasRomanDigits(resultValue)) {
     resultValue = removeNonRomanSymbols(resultValue);
@@ -48,9 +50,18 @@ const onConverterInput = () => {
   return (evt) => {
     evt.preventDefault();
 
-    const resultInputValue = getInputValue(converterInputNode.value);
+    const currentCursorPosition = evt.target.selectionStart;
+    const previousResultInputValueLength = lastInputValue.length;
 
+    const resultInputValue = getInputValue(converterInputNode.value);
     converterInputNode.value = resultInputValue;
+
+    if (resultInputValue.length === previousResultInputValueLength) {
+      converterInputNode.setSelectionRange(resultInputValue.length, resultInputValue.length);
+    } else {
+      converterInputNode.setSelectionRange(currentCursorPosition, currentCursorPosition);
+    }
+
     converterOutputNode.textContent = getOutputValue(resultInputValue);
   };
 };
