@@ -16,7 +16,19 @@ const getInputValue = (value) => {
   let resultValue = currentValue;
 
   if (hasRomanDigits(resultValue)) {
-    resultValue = removeNonRomanSymbols(resultValue);
+    if (hasArabicDigits(resultValue) && hasArabicDigits(lastInputValue)) {
+      resultValue = removeNonArabicSymbols(resultValue);
+
+      if (!isValidArabicNumber(resultValue)) {
+        resultValue = lastInputValue;
+      }
+    } else {
+      resultValue = removeNonRomanSymbols(resultValue);
+
+      if (!isValidRomanNumber(resultValue)) {
+        resultValue = lastInputValue;
+      }
+    }
 
     if (!isValidRomanNumber(resultValue)) {
       resultValue = lastInputValue;
