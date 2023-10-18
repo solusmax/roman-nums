@@ -1,4 +1,11 @@
-import { hasRomanDigits, hasArabicDigits, removeNonRomanSymbols, removeNonArabicSymbols, isValidRomanNumber, isValidArabicNumber } from './utils.js';
+import {
+  hasRomanDigits,
+  hasArabicDigits,
+  removeNonRomanSymbols,
+  removeNonArabicSymbols,
+  isValidRomanNumber,
+  isValidArabicNumber,
+} from './utils.js';
 import { convert } from './converter.js';
 
 const converterInputNode = document.querySelector('.converter__input');
@@ -69,9 +76,15 @@ const onConverterInput = () => {
     converterInputNode.value = resultInputValue;
 
     if (resultInputValue.length === previousResultInputValueLength) {
-      converterInputNode.setSelectionRange(resultInputValue.length, resultInputValue.length);
+      converterInputNode.setSelectionRange(
+        resultInputValue.length,
+        resultInputValue.length,
+      );
     } else {
-      converterInputNode.setSelectionRange(currentCursorPosition, currentCursorPosition);
+      converterInputNode.setSelectionRange(
+        currentCursorPosition,
+        currentCursorPosition,
+      );
     }
 
     converterOutputNode.textContent = getOutputValue(resultInputValue);

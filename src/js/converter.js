@@ -48,11 +48,13 @@ const convertToArabic = (roman) => {
 
 const convertToRoman = (arabic) => {
   let result = '';
-  const digits = String(arabic).split('').map((digit) => Number(digit));
+  const digits = String(arabic)
+    .split('')
+    .map((digit) => Number(digit));
 
   digits.forEach((digit, i) => {
     let romanDigit;
-    const roundedNumber = String(digit * (10 ** (digits.length - 1 - i)));
+    const roundedNumber = String(digit * 10 ** (digits.length - 1 - i));
     const firstDigit = Number(roundedNumber[0]);
     const zerosCount = roundedNumber.length - 1;
 
@@ -61,12 +63,16 @@ const convertToRoman = (arabic) => {
     }
 
     if (firstDigit >= 1 && firstDigit <= 3) {
-      romanDigit = `${ArabicNums[roundedNumber / firstDigit].repeat(firstDigit)}`;
+      romanDigit = `${ArabicNums[roundedNumber / firstDigit].repeat(
+        firstDigit,
+      )}`;
     }
 
     if (firstDigit === 4) {
-      const firstRomanDigit = ArabicNums[Number(roundedNumber) - (3 * (10 ** zerosCount))];
-      const secondRomanDigit = ArabicNums[Number(roundedNumber) + (10 ** zerosCount)];
+      const firstRomanDigit =
+        ArabicNums[Number(roundedNumber) - 3 * 10 ** zerosCount];
+      const secondRomanDigit =
+        ArabicNums[Number(roundedNumber) + 10 ** zerosCount];
 
       romanDigit = `${firstRomanDigit}${secondRomanDigit}`;
     }
@@ -76,16 +82,21 @@ const convertToRoman = (arabic) => {
     }
 
     if (firstDigit >= 6 && firstDigit <= 8) {
-      const firstRomanDigitInDecimal = Number(roundedNumber) - ((firstDigit - 5) * (10 ** zerosCount));
+      const firstRomanDigitInDecimal =
+        Number(roundedNumber) - (firstDigit - 5) * 10 ** zerosCount;
       const firstRomanDigit = ArabicNums[firstRomanDigitInDecimal];
-      const secondRomanDigit = `${ArabicNums[firstRomanDigitInDecimal - (4 * (10 ** zerosCount))].repeat(firstDigit - 5)}`;
+      const secondRomanDigit = `${ArabicNums[
+        firstRomanDigitInDecimal - 4 * 10 ** zerosCount
+      ].repeat(firstDigit - 5)}`;
 
       romanDigit = `${firstRomanDigit}${secondRomanDigit}`;
     }
 
     if (firstDigit === 9) {
-      const firstRomanDigit = ArabicNums[Number(roundedNumber) - (8 * (10 ** zerosCount))];
-      const secondRomanDigit = ArabicNums[Number(roundedNumber) + (10 ** zerosCount)];
+      const firstRomanDigit =
+        ArabicNums[Number(roundedNumber) - 8 * 10 ** zerosCount];
+      const secondRomanDigit =
+        ArabicNums[Number(roundedNumber) + 10 ** zerosCount];
 
       romanDigit = `${firstRomanDigit}${secondRomanDigit}`;
     }

@@ -5,7 +5,9 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local("Noto Serif"), local("Noto Serif Regular"),
+  src:
+    local("Noto Serif"),
+    local("Noto Serif Regular"),
     local("Noto-Serif-Regular"),
     url("#{$fonts}/NotoSerif-Regular.woff2") format("woff2");
 }
@@ -16,7 +18,9 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: local("Noto Serif Italic"), local("Noto-Serif-Italic"),
+  src:
+    local("Noto Serif Italic"),
+    local("Noto-Serif-Italic"),
     url("#{$fonts}/NotoSerif-Italic.woff2") format("woff2");
 }
 
@@ -27,7 +31,9 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local("Noto Serif Bold"), local("Noto-Serif-Bold"),
+  src:
+    local("Noto Serif Bold"),
+    local("Noto-Serif-Bold"),
     url("#{$fonts}/NotoSerif-Bold.woff2") format("woff2");
 }
 // Noto Serif Bold Italic
@@ -37,6 +43,8 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
-  src: local("Noto Serif Bold Italic"), local("Noto-Serif-Bold-Italic"),
+  src:
+    local("Noto Serif Bold Italic"),
+    local("Noto-Serif-Bold-Italic"),
     url("#{$fonts}/NotoSerif-BoldItalic.woff2") format("woff2");
 }
